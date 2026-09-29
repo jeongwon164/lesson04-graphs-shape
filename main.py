@@ -179,3 +179,49 @@ st.plotly_chart(fig4, use_container_width=True)
 
 st.markdown("**이 그래프로 알 수 있는 것**")
 st.info("개봉일 스크린수와 총 관객 사이의 관계를 영화별로 비교할 수 있습니다.")
+
+
+# 그래프 5
+st.divider()
+st.header("그래프 5. 장르별 총 관객 분포")
+
+box_df = df.dropna(
+    subset=["genre", "total_audi", "movieNm"]
+).copy()
+
+# 영화가 10편 이상인 장르만 선택합니다.
+genre_counts = box_df["genre"].value_counts()
+eligible_genres = genre_counts[genre_counts >= 10].index.tolist()
+box_df = box_df[box_df["genre"].isin(eligible_genres)].copy()
+
+fig5 = px.box(
+    box_df,
+    x="genre",
+    y="total_audi",
+    color="genre",
+    points="outliers",
+    hover_name="movieNm",
+    title="영화가 10편 이상인 장르의 총 관객 분포",
+    labels={
+        "genre": "장르",
+        "total_audi": "총 관객",
+    },
+)
+
+fig5.update_traces(
+    hovertemplate=(
+        "영화: %{hovertext}<br>"
+        "총 관객: %{y:,}명"
+        "<extra></extra>"
+    )
+)
+
+fig5.update_layout(
+    showlegend=False,
+    margin=dict(l=20, r=20, t=70, b=20),
+)
+
+st.plotly_chart(fig5, use_container_width=True)
+
+st.markdown("**이 그래프로 알 수 있는 것**")
+st.info("영화가 10편 이상인 장르별로 총 관객의 분포와 이상치를 비교할 수 있습니다.")
