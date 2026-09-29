@@ -1,10 +1,10 @@
-
 import pandas as pd
 import plotly.express as px
 import streamlit as st
 
 st.set_page_config(page_title="영화 데이터 그래프 도감 2 - 분포와 관계", page_icon="🎬", layout="wide")
-DATA_URL = "https://raw.githubusercontent.com/happykth/data/main/kobis_movies.csv"
+DATA_URL = "https://raw.githubusercontent.com/greatsong/modudata/main/data/kobis_movies.csv"
+
 st.title("영화 데이터 그래프 도감 2 - 분포와 관계")
 st.caption("1년간 박스오피스 10위권에 든 영화 216편의 요약 데이터를 살펴봅니다.")
 
@@ -49,6 +49,49 @@ st.caption("다음 그래프를 이 구역에 추가하세요.")
 st.divider()
 st.header("그래프 3")
 st.caption("다음 그래프를 이 구역에 추가하세요.")
+st.divider()
+st.header("그래프 4")
+st.caption("다음 그래프를 이 구역에 추가하세요.")
+
+# 그래프 2
+st.divider()
+st.header("그래프 2. 장르별 영화 총 관객 트리맵")
+
+treemap_df = df[
+    ["genre", "movieNm", "total_audi"]
+].dropna(subset=["genre", "movieNm", "total_audi"]).copy()
+
+fig2 = px.treemap(
+    treemap_df,
+    path=["genre", "movieNm"],
+    values="total_audi",
+    title="장르별 영화 총 관객",
+)
+
+fig2.update_traces(
+    hovertemplate=(
+        "장르: %{parent}<br>"
+        "영화명: %{label}<br>"
+        "총 관객: %{value:,}명"
+        "<extra></extra>"
+    )
+)
+
+fig2.update_layout(
+    margin=dict(l=20, r=20, t=70, b=20),
+)
+
+st.plotly_chart(fig2, use_container_width=True)
+
+st.markdown("**이 그래프로 알 수 있는 것**")
+st.info("여기에 이 그래프를 통해 알 수 있는 내용을 한 문장으로 적어 주세요.")
+
+
+# 앞으로 추가할 그래프 공간
+st.divider()
+st.header("그래프 3")
+st.caption("다음 그래프를 이 구역에 추가하세요.")
+
 st.divider()
 st.header("그래프 4")
 st.caption("다음 그래프를 이 구역에 추가하세요.")
