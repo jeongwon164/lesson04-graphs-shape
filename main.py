@@ -324,3 +324,44 @@ st.plotly_chart(fig7, use_container_width=True)
 
 st.markdown("**이 그래프로 알 수 있는 것**")
 st.info("제작 국가별로 어떤 장르의 영화가 많이 포함되어 있는지와 각 국가·장르의 영화 편수를 비교할 수 있습니다.")
+
+
+# 그래프 8
+st.divider()
+st.header("그래프 8. 개봉 첫 주 관객이 많은 영화는 총 관객도 많은가?")
+
+scatter8_df = df.dropna(
+    subset=["first_week_audi", "total_audi", "movieNm"]
+).copy()
+
+question_title = "개봉 첫 주 관객이 많은 영화는 총 관객도 많은가?"
+
+fig8 = px.scatter(
+    scatter8_df,
+    x="first_week_audi",
+    y="total_audi",
+    hover_name="movieNm",
+    title=question_title,
+    labels={
+        "first_week_audi": "개봉 첫 주 관객",
+        "total_audi": "총 관객",
+    },
+)
+
+fig8.update_traces(
+    hovertemplate=(
+        "영화: %{hovertext}<br>"
+        "개봉 첫 주 관객: %{x:,}명<br>"
+        "총 관객: %{y:,}명"
+        "<extra></extra>"
+    )
+)
+
+fig8.update_layout(
+    margin=dict(l=20, r=20, t=70, b=20),
+)
+
+st.plotly_chart(fig8, use_container_width=True)
+
+st.markdown("**이 그래프로 알 수 있는 것**")
+st.info("개봉 첫 주 관객과 총 관객 사이의 관계를 영화별로 비교할 수 있습니다.")
