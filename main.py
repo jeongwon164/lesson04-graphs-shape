@@ -270,3 +270,57 @@ st.plotly_chart(fig6, use_container_width=True)
 
 st.markdown("**이 그래프로 알 수 있는 것**")
 st.info("개봉일 스크린수와 총 관객의 관계를 살펴보면서 첫 주 관객이 많은 영화가 버블 크기로 크게 나타나는 것을 비교할 수 있습니다.")
+
+
+# 그래프 7
+st.divider()
+st.header("그래프 7. 제작 국가 → 장르 영화 편수 선버스트")
+
+sunburst_df = df[["nation", "genre"]].copy()
+
+sunburst_df["nation"] = (
+    sunburst_df["nation"]
+    .fillna("미상")
+    .astype(str)
+    .str.strip()
+    .replace("", "미상")
+)
+
+sunburst_df["genre"] = (
+    sunburst_df["genre"]
+    .fillna("미상")
+    .astype(str)
+    .str.strip()
+    .replace("", "미상")
+)
+
+# 같은 국가·장르 조합별 영화 편수를 집계합니다.
+sunburst_counts = (
+    sunburst_df.groupby(["nation", "genre"])
+    .size()
+    .reset_index(name="영화편수")
+)
+
+fig7 = px.sunburst(
+    sunburst_counts,
+    path=["nation", "genre"],
+    values="영화편수",
+    title="제작 국가 → 장르별 영화 편수",
+)
+
+fig7.update_traces(
+    hovertemplate=(
+        "항목: %{label}<br>"
+        "영화 편수: %{value}편"
+        "<extra></extra>"
+    )
+)
+
+fig7.update_layout(
+    margin=dict(l=20, r=20, t=70, b=20),
+)
+
+st.plotly_chart(fig7, use_container_width=True)
+
+st.markdown("**이 그래프로 알 수 있는 것**")
+st.info("제작 국가별로 어떤 장르의 영화가 많이 포함되어 있는지와 각 국가·장르의 영화 편수를 비교할 수 있습니다.")
