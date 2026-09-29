@@ -87,11 +87,60 @@ st.markdown("**이 그래프로 알 수 있는 것**")
 st.info("여기에 이 그래프를 통해 알 수 있는 내용을 한 문장으로 적어 주세요.")
 
 
-# 앞으로 추가할 그래프 공간
+# 그래프 3
 st.divider()
-st.header("그래프 3")
-st.caption("다음 그래프를 이 구역에 추가하세요.")
+st.header("그래프 3. 총 관객 분포")
 
+hist_df = df.dropna(subset=["total_audi", "movieNm"]).copy()
+
+fig3 = px.histogram(
+    hist_df,
+    x="total_audi",
+    nbins=20,
+    title="영화별 총 관객 분포",
+    labels={
+        "total_audi": "총 관객",
+        "count": "영화 편수",
+    },
+)
+
+fig3.update_traces(
+    hovertemplate=(
+        "총 관객 구간: %{x}<br>"
+        "영화 편수: %{y}편"
+        "<extra></extra>"
+    )
+)
+
+fig3.update_layout(
+    margin=dict(l=20, r=20, t=70, b=20),
+)
+
+st.plotly_chart(fig3, use_container_width=True)
+
+# 가장 영화가 많이 몰린 구간 계산
+counts, edges = __import__("numpy").histogram(
+    hist_df["total_audi"],
+    bins=20,
+)
+peak_bin = int(counts.argmax())
+peak_low = edges[peak_bin]
+peak_high = edges[peak_bin + 1]
+
+most_watched = hist_df.loc[hist_df["total_audi"].idxmax()]
+
+peak_low_text = f"{peak_low:,.0f}명"
+peak_high_text = f"{peak_high:,.0f}명"
+
+st.markdown("**이 그래프로 알 수 있는 것**")
+st.info(
+    f"대부분의 영화가 몰려 있는 구간은 약 **{peak_low_text}~{peak_high_text}**이고, "
+    f"총 관객이 가장 많은 영화는 **{most_watched['movieNm']}**로 "
+    f"총 **{most_watched['total_audi']:,.0f}명**의 관객을 기록했습니다."
+)
+
+
+# 앞으로 추가할 그래프 공간
 st.divider()
 st.header("그래프 4")
 st.caption("다음 그래프를 이 구역에 추가하세요.")
