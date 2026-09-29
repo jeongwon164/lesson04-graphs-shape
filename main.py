@@ -225,3 +225,48 @@ st.plotly_chart(fig5, use_container_width=True)
 
 st.markdown("**이 그래프로 알 수 있는 것**")
 st.info("영화가 10편 이상인 장르별로 총 관객의 분포와 이상치를 비교할 수 있습니다.")
+
+
+# 그래프 6
+st.divider()
+st.header("그래프 6. 개봉일 스크린수 × 총 관객 × 첫 주 관객")
+
+bubble_df = df.dropna(
+    subset=["first_scrn", "total_audi", "first_week_audi", "movieNm", "genre"]
+).copy()
+
+fig6 = px.scatter(
+    bubble_df,
+    x="first_scrn",
+    y="total_audi",
+    size="first_week_audi",
+    color="genre",
+    hover_name="movieNm",
+    size_max=45,
+    title="개봉일 스크린수와 총 관객의 관계 — 첫 주 관객 버블 크기",
+    labels={
+        "first_scrn": "개봉일 스크린수",
+        "total_audi": "총 관객",
+        "first_week_audi": "첫 주 관객",
+        "genre": "장르",
+    },
+)
+
+fig6.update_traces(
+    hovertemplate=(
+        "영화: %{hovertext}<br>"
+        "개봉일 스크린수: %{x:,}개<br>"
+        "총 관객: %{y:,}명<br>"
+        "첫 주 관객: %{marker.size:,}명"
+        "<extra></extra>"
+    )
+)
+
+fig6.update_layout(
+    margin=dict(l=20, r=20, t=70, b=20),
+)
+
+st.plotly_chart(fig6, use_container_width=True)
+
+st.markdown("**이 그래프로 알 수 있는 것**")
+st.info("개봉일 스크린수와 총 관객의 관계를 살펴보면서 첫 주 관객이 많은 영화가 버블 크기로 크게 나타나는 것을 비교할 수 있습니다.")
