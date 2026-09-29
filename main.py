@@ -140,7 +140,42 @@ st.info(
 )
 
 
-# 앞으로 추가할 그래프 공간
+# 그래프 4
 st.divider()
-st.header("그래프 4")
-st.caption("다음 그래프를 이 구역에 추가하세요.")
+st.header("그래프 4. 개봉일 스크린수와 총 관객의 관계")
+
+scatter_df = df.dropna(
+    subset=["first_scrn", "total_audi", "movieNm", "genre"]
+).copy()
+
+fig4 = px.scatter(
+    scatter_df,
+    x="first_scrn",
+    y="total_audi",
+    color="genre",
+    hover_name="movieNm",
+    title="개봉일 스크린수와 총 관객의 관계",
+    labels={
+        "first_scrn": "개봉일 스크린수",
+        "total_audi": "총 관객",
+        "genre": "장르",
+    },
+)
+
+fig4.update_traces(
+    hovertemplate=(
+        "영화: %{hovertext}<br>"
+        "개봉일 스크린수: %{x:,}개<br>"
+        "총 관객: %{y:,}명"
+        "<extra></extra>"
+    )
+)
+
+fig4.update_layout(
+    margin=dict(l=20, r=20, t=70, b=20),
+)
+
+st.plotly_chart(fig4, use_container_width=True)
+
+st.markdown("**이 그래프로 알 수 있는 것**")
+st.info("개봉일 스크린수와 총 관객 사이의 관계를 영화별로 비교할 수 있습니다.")
