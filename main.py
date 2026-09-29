@@ -4,8 +4,7 @@ import plotly.express as px
 import streamlit as st
 
 st.set_page_config(page_title="영화 데이터 그래프 도감 2 - 분포와 관계", page_icon="🎬", layout="wide")
-DATA_URL = "https://raw.githubusercontent.com/greatsong/modudata/main/data/kobis_movies.csv"
-
+DATA_URL = "https://raw.githubusercontent.com/happykth/data/main/kobis_movies.csv"
 st.title("영화 데이터 그래프 도감 2 - 분포와 관계")
 st.caption("1년간 박스오피스 10위권에 든 영화 216편의 요약 데이터를 살펴봅니다.")
 
